@@ -115,6 +115,15 @@ cualquier otra conversación.
 | `GET /api/bot/availability` | Con la agenda encendida: los horarios para ofrecer, que quedan registrados como ofrecidos. Con `date=AAAA-MM-DD`, todas las horas libres de ese día; `query` dice hasta dónde llega lo consultado |
 | `POST` · `PATCH /api/bot/bookings` | Con la agenda encendida: reservar (201) o mover (200) una cita, solo en un horario que se ofreció |
 
+**Modo espejo** — para un cerebro que habla con WhatsApp por su cuenta (p. ej.
+Baileys / WhatsApp Web) y usa Vocero solo como CRM. Registran lo que ya pasó:
+no envían nada por Meta ni despiertan al agente incluido.
+
+| Endpoint | Para qué |
+|---|---|
+| `POST /api/bot/espejo/mensaje` | Copiar en la bandeja un mensaje ya recibido (`direction: "in"`) o ya enviado (`"out"`, `origin: "ai"` o `"manual"`). Por teléfono; crea contacto, conversación y lead si no existen. Idempotente por `externalId` |
+| `POST /api/bot/espejo/lead` | Actualizar el lead por teléfono: `nombre`, `ficha`, `nota`, `prioridad`, `etapa` (por nombre, sin importar acentos; solo avanza y no toca leads ganados o perdidos) y `handoff` |
+
 Los 409 vienen tipados (`ai_paused`, `window_closed`, `sandbox_violation`) para
 que tu bot sepa si callarse, mandar plantilla o rendirse. El guion de pruebas
 está en [`tests/e2e/us-bot-api.md`](tests/e2e/us-bot-api.md).
