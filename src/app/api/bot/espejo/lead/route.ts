@@ -9,7 +9,7 @@ const bodySchema = z.object({
   phone: z.string().min(5).refine((v) => espejoPhone(v).length >= 8, "Teléfono inválido"),
   nombre: z.string().max(120).nullable().optional(),
   // Claves libres, como PUT /api/bot/ficha: cada negocio califica distinto.
-  ficha: z.record(z.unknown()).optional(),
+  ficha: z.record(z.string(), z.unknown()).optional(),
   nota: z.string().max(4000).nullable().optional(),
   prioridad: z.enum(["alta", "media", "baja"]).nullable().optional(),
   /** Nombre de la etapa tal como se ve en el Pipeline (sin importar acentos). */

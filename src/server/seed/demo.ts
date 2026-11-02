@@ -2,6 +2,7 @@ import { eq, inArray } from "drizzle-orm";
 import type { getDb } from "@/lib/db";
 import { schema } from "@/lib/db";
 import { newId } from "@/lib/db/ids";
+import { RESPUESTAS_DEMO } from "@/server/quick-replies";
 
 /**
  * Negocio de demostración: consultoría de IA y procesos con el Método
@@ -550,6 +551,13 @@ Acciones:
       transcript: c.transcript,
     });
   }
+
+  // 049 — Cuatro respuestas rápidas para probar el «/» del compositor. No
+  // pisa ni duplica las que el negocio ya tenga con el mismo atajo.
+  await db
+    .insert(schema.quickReply)
+    .values(RESPUESTAS_DEMO.map((r) => ({ id: newId("quickReply"), organizationId, ...r })))
+    .onConflictDoNothing({ target: [schema.quickReply.organizationId, schema.quickReply.atajo] });
 
   return { contacts: DEMO_CONTACTS.length, kbEntries: DEMO_KB.length };
 }
