@@ -51,7 +51,7 @@ if (!force && !(await isDomainEmpty(db, org.id))) {
 
 const result = await seedDemo(db, org.id);
 console.log(
-  `[seed] Demo de la agencia (Método Empresa Clara) cargada: ${result.contacts} contactos, ${result.kbEntries} entradas de KB, 1 corrida de ejemplo`
+  `[seed] Demo de la agencia (VENOVA · Eva) cargada: ${result.contacts} contactos, ${result.kbEntries} entradas de KB, 1 corrida de ejemplo`
 );
 await sql.end();
 process.exit(0);

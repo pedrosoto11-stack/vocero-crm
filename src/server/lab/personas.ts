@@ -35,9 +35,9 @@ export const PERSONAS: Persona[] = [
     phone: "5210000000002",
     contactName: "[Prueba] Preguntón de precios",
     script: [
-      "Hola, ¿cuánto cuesta el diagnóstico?",
-      "¿Y la transformación completa?",
-      "¿Y solo un chatbot de WhatsApp?",
+      "Hola, ¿cuánto cuesta el sistema?",
+      "¿Y una app además del sistema?",
+      "¿Y solo un bot de WhatsApp?",
       "¿Hay descuento si pago todo junto?",
       "Ok, lo voy a pensar",
     ],
@@ -45,12 +45,12 @@ export const PERSONAS: Persona[] = [
   {
     key: "cliente_enojado",
     label: "Cliente enojado",
-    description: "Cliente en ejecución, molesto porque el cambio no se nota.",
+    description: "Cliente en construcción, molesto porque el cambio no se nota.",
     phone: "5210000000003",
     contactName: "[Prueba] Cliente enojado",
     script: [
       "Oigan, esto es el colmo",
-      "Pagamos la implementación y el equipo sigue anotando pedidos en la libreta",
+      "Pagamos el sistema y el equipo sigue anotando pedidos en la libreta",
       "¿Me van a responder o qué? Quiero una solución YA",
       "Pues espero que sí porque no pienso perder mi dinero",
     ],

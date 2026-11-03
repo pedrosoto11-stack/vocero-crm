@@ -3,10 +3,12 @@ import type { getDb } from "@/lib/db";
 import { schema } from "@/lib/db";
 import { newId } from "@/lib/db/ids";
 import { RESPUESTAS_DEMO } from "@/server/quick-replies";
+import { VENOVA_AGENT, VENOVA_KB } from "./venova";
 
 /**
- * Negocio de demostración: consultoría de IA y procesos con el Método
- * Empresa Clara (FR-075). Un lead por etapa del pipeline de la agencia.
+ * Negocio de demostración: VENOVA, sistemas, apps, web e IA a la medida de
+ * una pyme, con la asistente Eva (perfil y conocimiento en `venova.ts`).
+ * Un lead por etapa del pipeline de la agencia.
  * Idempotente: borra los datos demo previos de la organización (scoped por
  * los teléfonos demo) y reinserta. El KB queda lleno EXCEPTO confidencialidad
  * y manejo de datos — hueco INTENCIONAL para que el Laboratorio encuentre
@@ -222,70 +224,7 @@ const DEMO_CONTACTS: {
   },
 ];
 
-const DEMO_KB: { kind: "qa" | "block"; question?: string; answer?: string; content?: string }[] = [
-  {
-    kind: "block",
-    content:
-      'Quiénes somos: consultoría de IA y procesos para pequeñas y medianas empresas, con el Método Empresa Clara.\nPromesa: "Primero ordenamos tu empresa. Después lo digital. La IA es la última pieza, no la primera."\nRegla que nunca se rompe: no se automatiza el caos. Primero se ordena, luego se pone lo digital, luego se sistematiza, y solo entonces se automatiza o se aplica IA.',
-  },
-  {
-    kind: "block",
-    content:
-      'El método tiene 4 fases: AUDITAR → DISEÑAR → EJECUTAR → CONTROLAR.\n1. Auditar: entendemos cómo funciona de verdad la empresa (dónde se pierde tiempo, dinero e información y cuánto depende todo del dueño). Entregable: Diagnóstico Integral breve con 1 a 3 prioridades y un número de éxito ("estrella polar").\n2. Diseñar: definimos cómo debería funcionar solo lo prioritario, de la forma más simple y sin depender del dueño. Entregable: flujo, procedimiento y checklist por proceso.\n3. Ejecutar: implementamos las mejoras junto con el equipo y cuidamos que la gente realmente las use (gestión del cambio).\n4. Controlar: medimos a los 30 y 90 días si el número de éxito se movió.',
-  },
-  {
-    kind: "block",
-    content:
-      'La auditoría revisa 5 áreas ("lentes"): Comercial (de dónde vienen los clientes y cómo se cierran), Entrega/Cumplimiento (cómo se produce y entrega lo vendido), Administración y números (registros, caja, márgenes, cobros), Presencia digital (Google/Maps, web, WhatsApp, redes) y Tecnología (herramientas, información dispersa, trabajo manual).',
-  },
-  {
-    kind: "block",
-    content:
-      "Servicios:\n- Diagnóstico: auditoría + prioridades + número de éxito. Es acreditable al siguiente nivel.\n- Diseño + Plan: diagnóstico + diseño de los procesos prioritarios.\n- Transformación (el recomendado): diagnóstico + diseño + ejecución + adopción + control de resultados.\n- Proyecto tecnológico a medida (desarrollo de software, integraciones complejas, ERP, agentes complejos): se cotiza aparte.\nLos precios se definen en la llamada de asesoría según el tamaño de la empresa; el asistente NO da precios.",
-  },
-  {
-    kind: "block",
-    content:
-      "Qué incluye la consultoría: diagnóstico y diseño, estandarización y procedimientos, frente digital base (web, Google, WhatsApp comercial, sistema de control base), configuración de herramientas existentes, automatizaciones de reglas claras, IA con herramientas listas, y gestión del cambio y adopción.\nQué NO incluye (se cotiza aparte como proyecto tecnológico): software a medida, integraciones complejas entre plataformas, ERP completo, infraestructura, mantenimiento y soporte continuo, y modelos o agentes de IA que requieren desarrollo.",
-  },
-  {
-    kind: "qa",
-    question: "¿Me pueden automatizar mi negocio con IA?",
-    answer:
-      "Sí, pero en orden: primero revisamos cómo funciona hoy tu proceso, porque automatizar un proceso desordenado solo hace el desorden más rápido. Por eso empezamos con una llamada de asesoría y, si tiene sentido, con un diagnóstico.",
-  },
-  {
-    kind: "qa",
-    question: "¿Cómo empezamos?",
-    answer:
-      "Con una llamada de asesoría sin compromiso: nos cuentas tu negocio y qué te está quitando tiempo o dinero, y te decimos si un diagnóstico te serviría. Puedo agendarla ahora.",
-  },
-  {
-    kind: "qa",
-    question: "¿Cuánto cuesta?",
-    answer:
-      "Depende del tamaño de tu empresa y de lo que necesites; lo definimos en la llamada de asesoría. El diagnóstico es el primer paso y se acredita si luego avanzas con la transformación completa.",
-  },
-  {
-    kind: "qa",
-    question: "¿Qué es el diagnóstico o auditoría?",
-    answer:
-      "Es la primera fase: revisamos tu área comercial, tu entrega, tus números, tu presencia digital y tus herramientas. Te entregamos un informe breve con 1 a 3 prioridades y un número concreto de éxito (por ejemplo, bajar las horas del dueño de 60 a 30 por semana).",
-  },
-  {
-    kind: "qa",
-    question: "¿Cuánto tiempo toma?",
-    answer:
-      "Depende del tamaño de la empresa y de las prioridades que salgan del diagnóstico. En la llamada de asesoría te damos una estimación para tu caso.",
-  },
-  {
-    kind: "qa",
-    question: "¿Me hacen una página web o un sistema a medida?",
-    answer:
-      "La web, Google, WhatsApp comercial y un sistema de control base entran dentro de la consultoría. Un software hecho a la medida es un proyecto de desarrollo aparte: lo podemos dirigir, pero se cotiza por separado.",
-  },
-  // HUECO INTENCIONAL: nada sobre confidencialidad ni manejo de datos (lo encuentra el Laboratorio).
-];
+const DEMO_KB = VENOVA_KB;
 
 export async function seedDemo(
   db: Db,
@@ -419,32 +358,11 @@ export async function seedDemo(
   await db
     .update(schema.agentProfile)
     .set({
-      name: "Asistente",
-      tone: "Cercano, claro y profesional. Tutea al cliente. Mensajes cortos, sin tecnicismos ni promesas exageradas sobre IA.",
-      instructions: `Eres el asistente de una consultoría de IA y procesos para pequeñas y medianas empresas que trabaja con el Método Empresa Clara ("primero ordenamos, después lo digital; la IA es la última pieza").
-
-Tu único objetivo es llevar a cada persona interesada a una LLAMADA DE ASESORÍA. No vendes ni cotizas: calificas y agendas.
-
-Cómo conversar:
-1. Saluda y pregunta a qué se dedica su negocio y cuántas personas trabajan en él.
-2. Pregunta qué le está quitando más tiempo o dinero hoy, o qué quiere automatizar.
-3. Explica en 1 o 2 frases que primero revisamos cómo funciona el proceso antes de automatizar, porque automatizar el desorden no sirve.
-4. Ofrece agendar la llamada de asesoría.
-
-Reglas:
-- Nunca des precios, plazos cerrados ni garantías de resultados: eso se define en la llamada.
-- No prometas automatizaciones ni IA para un proceso que aún no se ha revisado.
-- Responde solo con lo que está en el conocimiento; si no lo sabes, dilo y ofrece la llamada.
-- Haz una pregunta a la vez.
-
-Acciones:
-- Cuando conozcas el rubro, el tamaño del equipo y el dolor principal, guárdalos en una nota del lead (update_lead).
-- Cuando acepte la llamada, ofrece horarios con offer_slots y agenda el que elija con book_slot. Al agendar, el lead pasa solo a "Asesoría agendada".
-- No muevas al lead de etapa tú mismo: las etapas posteriores las maneja el consultor.`,
-      escalationRules:
-        "Escala a un humano si la persona ya es cliente (proyecto en curso), si pide hablar directamente con el consultor, si pide una propuesta formal o precio exacto después de la llamada, si hay una queja, o si pregunta por un proyecto de desarrollo a medida.",
-      greeting:
-        "¡Hola! 👋 Gracias por escribir. Ayudo a empresas a ordenar sus procesos y después automatizarlos con IA. ¿A qué se dedica tu negocio?",
+      name: VENOVA_AGENT.name,
+      tone: VENOVA_AGENT.tone,
+      instructions: VENOVA_AGENT.instructions,
+      escalationRules: VENOVA_AGENT.escalationRules,
+      greeting: VENOVA_AGENT.greeting,
       updatedAt: new Date(),
     })
     .where(eq(schema.agentProfile.organizationId, organizationId));
@@ -471,9 +389,9 @@ Acciones:
       hallazgos: [],
       transcript: [
         { role: "cliente", text: "Tengo una distribuidora y quiero ordenar cómo tomamos los pedidos" },
-        { role: "agente", text: "¡Qué bien que lo quieras ordenar primero! ¿Cuántas personas tocan un pedido desde que llega hasta que se entrega?" },
+        { role: "agente", text: "Una distribuidora, entonces el día a día son pedidos, rutas y cobros. ¿Cuántas personas tocan un pedido desde que llega hasta que se entrega?" },
         { role: "cliente", text: "Me recomendaron con ustedes, quiero agendar la llamada esta semana" },
-        { role: "agente", text: "¡Perfecto! Te agendo la llamada de asesoría. ¿Qué día y hora te acomoda?" },
+        { role: "agente", text: "La conversación inicial la atiende Pedro, el CEO de VENOVA, y dura de 30 a 45 minutos sin costo. ¿La prefieres por Meet o por videollamada de WhatsApp?" },
       ],
     },
     {
@@ -481,8 +399,8 @@ Acciones:
       veredicto: "verde",
       hallazgos: [],
       transcript: [
-        { role: "cliente", text: "¿Cuánto cuesta el diagnóstico?" },
-        { role: "agente", text: "Depende del tamaño de tu empresa; lo definimos en la llamada de asesoría, que no tiene costo. ¿Te la agendo?" },
+        { role: "cliente", text: "¿Cuánto cuesta el sistema?" },
+        { role: "agente", text: "Depende de lo que necesites. Pedro te da una referencia en la conversación inicial, que no tiene costo, y el precio se acuerda viendo el prototipo. ¿La agendamos?" },
       ],
     },
     {
@@ -492,12 +410,12 @@ Acciones:
         {
           tipo: "tono",
           evidencia:
-            "El agente escaló bien, pero ante 'pagamos y el equipo sigue con la libreta' faltó reconocer la molestia antes de pasar el caso.",
+            "El agente escaló bien, pero ante 'pagamos y el equipo sigue con la libreta' faltó reconocer la molestia antes de avisar a Pedro.",
         },
       ],
       transcript: [
-        { role: "cliente", text: "Pagamos la implementación y el equipo sigue anotando pedidos en la libreta" },
-        { role: "agente", text: "Paso tu caso al consultor para que lo revise contigo." },
+        { role: "cliente", text: "Pagamos el sistema y el equipo sigue anotando pedidos en la libreta" },
+        { role: "agente", text: "Claro, ya le avisé a Pedro. Te escribe él por aquí mismo en un momento." },
       ],
     },
     {
@@ -511,13 +429,13 @@ Acciones:
           sugerencia: {
             pregunta: "¿Firman acuerdo de confidencialidad?",
             respuesta:
-              "Sí. Antes de recibir información de tu empresa firmamos un acuerdo de confidencialidad, y solo el equipo asignado a tu proyecto ve tus datos.",
+              "Sí. Antes de recibir información de tu empresa firmamos un acuerdo de confidencialidad, y solo el equipo asignado a tu sistema ve tus datos.",
           },
         },
       ],
       transcript: [
         { role: "cliente", text: "¿Firman acuerdo de confidencialidad antes de ver la información de mi empresa?" },
-        { role: "agente", text: "Déjame confirmarlo con el consultor y te respondo en un momento." },
+        { role: "agente", text: "Déjame confirmarlo con Pedro y te respondo en un momento." },
       ],
     },
     {
@@ -525,7 +443,7 @@ Acciones:
       veredicto: "verde",
       hallazgos: [],
       transcript: [
-        { role: "cliente", text: "Ya soy cliente, prefiero hablar directamente con el consultor" },
+        { role: "cliente", text: "Ya soy cliente, prefiero hablar directamente con Pedro" },
         { role: "agente", text: "(handoff: la conversación pasó a atención humana)" },
       ],
     },
@@ -535,7 +453,7 @@ Acciones:
       hallazgos: [],
       transcript: [
         { role: "cliente", text: "ola, ustedes asen bots pa whatsap?" },
-        { role: "agente", text: "¡Hola! Sí trabajamos con IA, pero primero revisamos tu proceso para que el bot funcione de verdad. ¿A qué se dedica tu negocio?" },
+        { role: "agente", text: "Buenas, soy Eva, la asistente de VENOVA. Sí trabajamos con IA en WhatsApp. Antes de nada, ¿cómo te llamas?" },
       ],
     },
   ];
