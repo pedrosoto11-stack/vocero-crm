@@ -1,6 +1,6 @@
 -- ============================================================
 -- Vocero · de Empresa Clara a VENOVA (asistente: Eva).
--- Para una instancia YA en marcha: deja las 8 etapas de VENOVA (los leads de
+-- Para una instancia YA en marcha: deja las 9 etapas de VENOVA (los leads de
 -- las etapas que sobran pasan a la equivalente), reemplaza la base de
 -- conocimiento y el perfil del agente. No toca contactos ni conversaciones.
 -- Re-ejecutable. Generado por scripts/gen-venova-sql.ts: no editar a mano.
@@ -22,9 +22,10 @@ INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 's
 INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'Conversación agendada'), 1, 20), (SELECT id FROM _org), 'Conversación agendada', 2, 'open' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Conversación agendada');
 INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'Idea aclarada'), 1, 20), (SELECT id FROM _org), 'Idea aclarada', 3, 'open' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Idea aclarada');
 INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'Prototipo en preparación'), 1, 20), (SELECT id FROM _org), 'Prototipo en preparación', 4, 'open' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Prototipo en preparación');
-INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'Propuesta presentada'), 1, 20), (SELECT id FROM _org), 'Propuesta presentada', 5, 'open' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Propuesta presentada');
-INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'Ganado'), 1, 20), (SELECT id FROM _org), 'Ganado', 6, 'won' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Ganado');
-INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'No es el momento'), 1, 20), (SELECT id FROM _org), 'No es el momento', 7, 'lost' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='No es el momento');
+INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'Presentación agendada'), 1, 20), (SELECT id FROM _org), 'Presentación agendada', 5, 'open' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Presentación agendada');
+INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'Propuesta presentada'), 1, 20), (SELECT id FROM _org), 'Propuesta presentada', 6, 'open' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Propuesta presentada');
+INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'Ganado'), 1, 20), (SELECT id FROM _org), 'Ganado', 7, 'won' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Ganado');
+INSERT INTO pipeline_stage (id, organization_id, name, position, kind) SELECT 'stg_' || substr(md5(random()::text || 'No es el momento'), 1, 20), (SELECT id FROM _org), 'No es el momento', 8, 'lost' WHERE NOT EXISTS (SELECT 1 FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='No es el momento');
 UPDATE lead SET stage_id=(SELECT id FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Ganado' LIMIT 1) WHERE stage_id IN (SELECT id FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Ejecutando (Fase 3)') AND (SELECT id FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Ganado' LIMIT 1) IS NOT NULL;
 DELETE FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Ejecutando (Fase 3)' AND kind='open' AND NOT EXISTS (SELECT 1 FROM lead WHERE stage_id=pipeline_stage.id);
 UPDATE lead SET stage_id=(SELECT id FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Ganado' LIMIT 1) WHERE stage_id IN (SELECT id FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Control 30/90 días (Fase 4)') AND (SELECT id FROM pipeline_stage WHERE organization_id=(SELECT id FROM _org) AND name='Ganado' LIMIT 1) IS NOT NULL;
@@ -40,9 +41,10 @@ UPDATE pipeline_stage SET position=1 WHERE organization_id=(SELECT id FROM _org)
 UPDATE pipeline_stage SET position=2 WHERE organization_id=(SELECT id FROM _org) AND name='Conversación agendada';
 UPDATE pipeline_stage SET position=3 WHERE organization_id=(SELECT id FROM _org) AND name='Idea aclarada';
 UPDATE pipeline_stage SET position=4 WHERE organization_id=(SELECT id FROM _org) AND name='Prototipo en preparación';
-UPDATE pipeline_stage SET position=5 WHERE organization_id=(SELECT id FROM _org) AND name='Propuesta presentada';
-UPDATE pipeline_stage SET position=6 WHERE organization_id=(SELECT id FROM _org) AND name='Ganado';
-UPDATE pipeline_stage SET position=7 WHERE organization_id=(SELECT id FROM _org) AND name='No es el momento';
+UPDATE pipeline_stage SET position=5 WHERE organization_id=(SELECT id FROM _org) AND name='Presentación agendada';
+UPDATE pipeline_stage SET position=6 WHERE organization_id=(SELECT id FROM _org) AND name='Propuesta presentada';
+UPDATE pipeline_stage SET position=7 WHERE organization_id=(SELECT id FROM _org) AND name='Ganado';
+UPDATE pipeline_stage SET position=8 WHERE organization_id=(SELECT id FROM _org) AND name='No es el momento';
 
 -- Base de conocimiento
 DELETE FROM kb_entry WHERE organization_id=(SELECT id FROM _org);

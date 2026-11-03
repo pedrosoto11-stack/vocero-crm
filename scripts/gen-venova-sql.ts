@@ -21,6 +21,7 @@ const ETAPAS: { name: string; kind: "open" | "won" | "lost"; desde: string[] }[]
   { name: "Conversación agendada", kind: "open", desde: ["Asesoría agendada"] },
   { name: "Idea aclarada", kind: "open", desde: ["Diagnóstico propuesto"] },
   { name: "Prototipo en preparación", kind: "open", desde: ["Diseñando (Fase 2)"] },
+  { name: "Presentación agendada", kind: "open", desde: [] },
   { name: "Propuesta presentada", kind: "open", desde: ["Presupuesto de ejecución"] },
   { name: "Ganado", kind: "won", desde: ["Cliente"] },
   { name: "No es el momento", kind: "lost", desde: ["Perdido"] },
@@ -57,7 +58,7 @@ const etapas = [
 
 const sql = `-- ============================================================
 -- Vocero · de Empresa Clara a VENOVA (asistente: Eva).
--- Para una instancia YA en marcha: deja las 8 etapas de VENOVA (los leads de
+-- Para una instancia YA en marcha: deja las 9 etapas de VENOVA (los leads de
 -- las etapas que sobran pasan a la equivalente), reemplaza la base de
 -- conocimiento y el perfil del agente. No toca contactos ni conversaciones.
 -- Re-ejecutable. Generado por scripts/gen-venova-sql.ts: no editar a mano.

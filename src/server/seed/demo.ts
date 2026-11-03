@@ -121,6 +121,26 @@ const DEMO_CONTACTS: {
     ],
   },
   {
+    phone: "5215612340011",
+    name: "Sofía Márquez",
+    stage: "Presentación agendada",
+    notes: "Farmacia con 3 sucursales. Prototipo listo; la reunión para presentarlo y entregar la propuesta ya tiene fecha.",
+    priority: "alta",
+    ficha: {
+      empresa: "Farmacia Márquez",
+      rubro: "Farmacia",
+      personas: 9,
+      dolor: "No sabe qué tiene en cada sucursal; se agota lo que más se vende",
+      p3_quiere_ver: "El inventario de las 3 sucursales en una pantalla",
+      reunion_prototipo: "Jueves 10:00 por Meet",
+    },
+    thread: [
+      { dir: "out", text: "Sofía, el prototipo ya está listo. Te lo presento el jueves a las 10:00 por Meet y ahí mismo te entrego la propuesta.", hoursAgo: 12 },
+      { dir: "in", text: "Perfecto, ahí estaré. ¿Puede entrar mi hermano que lleva las compras?", hoursAgo: 11 },
+      { dir: "out", text: "Claro, mándame su correo y le llega también el enlace.", hoursAgo: 11 },
+    ],
+  },
+  {
     phone: "5215612340008",
     name: "Jesús Aguilar",
     stage: "Propuesta presentada",
